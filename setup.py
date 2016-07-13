@@ -2,12 +2,15 @@ from setuptools import setup
 
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
+# to get the proper numpy header locations (if using anaconda)
+import numpy as np
 
 ext_modules = []
 ext_modules.append(Extension(
     "kitti.bp.module",
     ["kitti/bp/module.pyx", "kitti/bp/interp.cpp", "kitti/bp/stereo.cpp", "kitti/bp/bp.cpp"],
-    include_dirs=["kitti/bp", "/opt/opencv/include"],
+    # modified to include anaconda header locations for numpy
+    include_dirs=["kitti/bp", "/opt/opencv/include", np.get_include()],
     library_dirs=["/opt/opencv/lib"],
     libraries=["opencv_core", "opencv_imgproc"],
     language="c++",
