@@ -14,13 +14,22 @@ def test_load_disparity_points(drive=11, frame=0):
     for x, y, d in np.round(xyd):
         disp[y, x] = d
 
+    stf = load_stereo_frame(drive, 0)
+
+
     plt.figure(1)
     plt.clf()
+    plt.subplot(2,1,1)
     plt.imshow(disp)
+
+    plt.subplot(2,1,2)
+    plt.imshow(stf[0],cmap=plt.cm.gray)
+
     plt.show()
 
 
 def test_disparity_with_bm(drive=11, frame=0):
+    # cv2.createStereoBM seems to be absent from current version of opencv
     import cv2
 
     xyd = load_disparity_points(drive, frame, color=True)
@@ -100,7 +109,7 @@ def test_interp(drive=11, frame=0):
     plt.imshow(lin_disp)
     plt.subplot(212)
     plt.imshow(lstsq_disp)
-    plt.show()
+    plt.show(block=False)
 
 
 def test_bp_interp(drive=11, frame=0):
@@ -125,11 +134,40 @@ def test_bp_interp(drive=11, frame=0):
     plt.imshow(bp_disp)
     plt.subplot(414)
     plt.imshow(bp_disp2)
-    plt.show()
+    plt.show(block=False)
+
+
+def test_clr(drive=11, frame=0):
+    xyd = load_disparity_points(drive, frame, color=False)
+
+    disp = np.zeros(image_shape)
+    for j, i, d in np.round(xyd):
+        disp[i, j] = d
+
+    pair = load_stereo_frame(drive, frame, color=False)
+    bp_disp2 = bp_stereo_interp(pair[0], pair[1], xyd)
+
+    cpair = load_stereo_frame(drive, frame, color=True)
+
+    plt.figure()
+    plt.clf()
+    plt.subplot(411)
+    plt.imshow(cpair[0])
+    plt.subplot(412)
+    plt.imshow(cpair[1])
+    plt.subplot(413)
+    plt.imshow(disp)
+    plt.subplot(414)
+    plt.imshow(bp_disp2)
+    plt.show(block=False)
 
 
 if __name__ == '__main__':
+
     test_load_disparity_points()
-    # test_disparity_with_bm()
-    # test_interp()
-    # test_bp_interp()
+    test_disparity_with_bm()
+    test_interp()
+    test_bp_interp()
+    test_clr()
+
+    plt.show()  # keeps all non-blocking frames to show and then wait for me to close them all
