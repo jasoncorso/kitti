@@ -88,6 +88,10 @@ def get_position_transform(pos0, pos1, invert=False):
 
 
 def load_video_images(path, indices, ext='.png'):
+    """
+       Load in some set of images given a path (directory) and an list of integers.
+       @return the images load in a list (images are scipy.ndimage)
+    """
     import scipy.ndimage
     images = [
         scipy.ndimage.imread(os.path.join(path, '%010d%s' % (index, ext)))
