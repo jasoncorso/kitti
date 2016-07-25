@@ -20,14 +20,6 @@ def get_frame_inds(drive, **kwargs):
     return get_inds(get_video_dir(drive, **kwargs))
 
 
-def get_video_images(path, indices, ext='.png'):
-    import scipy.ndimage
-    images = [
-        scipy.ndimage.imread(os.path.join(path, '%010d%s' % (index, ext)))
-        for index in indices]
-    return images
-
-
 def get_video_odometry(oxts_path, indices, ext='.txt'):
     data_path = os.path.join(oxts_path, 'data')
 
@@ -95,18 +87,26 @@ def get_position_transform(pos0, pos1, invert=False):
             np.dot(np.linalg.inv(T1), T0).T)
 
 
+def load_video_images(path, indices, ext='.png'):
+    import scipy.ndimage
+    images = [
+        scipy.ndimage.imread(os.path.join(path, '%010d%s' % (index, ext)))
+        for index in indices]
+    return images
+
+
 def load_video(drive, **kwargs):
     path = get_video_dir(drive, **kwargs)
     indices = get_inds(path)
-    images = get_video_images(path, indices)
+    images = load_video_images(path, indices)
     return np.array(images)
 
 
 def load_stereo_frame(drive, ind, **kwargs):
     left_path = get_video_dir(drive, right=False, **kwargs)
     right_path = get_video_dir(drive, right=True, **kwargs)
-    left_images = get_video_images(left_path, [ind])
-    right_images = get_video_images(right_path, [ind])
+    left_images = load_video_images(left_path, [ind])
+    right_images = load_video_images(right_path, [ind])
     return np.array(left_images[0]), np.array(right_images[0])
 
 
@@ -117,21 +117,21 @@ def load_stereo_video(drive, **kwargs):
     right_inds = get_inds(right_path)
     assert (np.unique(left_inds) == np.unique(right_inds)).all()
 
-    left_images = get_video_images(left_path, left_inds)
-    right_images = get_video_images(right_path, right_inds)
+    left_images = load_video_images(left_path, left_inds)
+    right_images = load_video_images(right_path, right_inds)
     return np.array(zip(left_images, right_images))
 
 
 def load_disp_frame(drive, ind, **kwargs):
     path = get_disp_dir(drive, **kwargs)
-    images = get_video_images(path, [ind])
+    images = load_video_images(path, [ind])
     return np.asarray(images[0])
 
 
 def load_disp_video(drive, **kwargs):
     path = get_disp_dir(drive, **kwargs)
     inds = get_inds(path)
-    images = get_video_images(path, inds)
+    images = load_video_images(path, inds)
     return np.asarray(images)
 
 
