@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+import re
 
 root_dir = os.path.dirname(os.path.abspath(__file__))
 data_dir = os.path.join(os.path.dirname(root_dir), 'data')
@@ -9,6 +10,26 @@ image_shape = 375, 1242
 
 def get_drive_dir(drive, date='2011_09_26'):
     return os.path.join(data_dir, date, date + '_drive_%04d_sync' % drive)
+
+def get_drives():
+    """ retrieve a list of drive-data directories (over all dates)
+        @author jason corso
+        @return a set of tuples (date,index); to get the actual drive_dir use get_drive_dir
+    """
+
+    l = [[(d,f) for f in os.listdir(os.path.join(data_dir,d))
+                        if re.match(r'^%s'%(d), f) ] for d in get_dates() ]
+    l = [item for sublist in l for item in sublist]
+    return [(d,int(re.split('_',p)[4])) for (d,p) in l]
+
+
+def get_dates():
+    """ retrieve a list of drive-data directories (over all dates)
+        @author jason corso
+    """
+    files = [f for f in os.listdir(data_dir) if re.match(r'[0-9]+_[0-9]+_[0-9]+$', f)]
+    files.sort()
+    return files
 
 
 def get_inds(path, ext='.png'):

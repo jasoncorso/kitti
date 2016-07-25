@@ -3,7 +3,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from kitti.data import get_drives, image_shape, data_dir, Calib
+from kitti.data import get_drives, get_dates, image_shape, data_dir, Calib
 from kitti.raw import load_stereo_frame
 from kitti.velodyne import load_velodyne_points
 
@@ -11,6 +11,10 @@ from kitti.velodyne import load_velodyne_points
 def test_get_drives():
     drives = get_drives()
     print drives
+
+def test_get_dates():
+    dates = get_dates()
+    print dates
 
 
 def test_disp2rect():
@@ -78,6 +82,17 @@ def test_disp2rect():
 
 
 if __name__ == '__main__':
-    # print data_dir
+
+    print data_dir
+
+    print "test_get_dates()"
+    test_get_dates()
+
+    print "test_get_drives()"
     test_get_drives()
-    # test_disp2rect()
+
+    print "test_disp2rect()"
+    test_disp2rect()
+
+
+
