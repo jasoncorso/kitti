@@ -1,5 +1,13 @@
-import os
+"""
+  kittipy data module
 
+  @author jasoncorso
+  @forked from github:hunse/kitti
+
+  All functions related to navigating the dataset are in this module
+"""
+
+import os
 import numpy as np
 import re
 
@@ -21,6 +29,22 @@ def get_drives():
                         if re.match(r'^%s'%(d), f) ] for d in get_dates() ]
     l = [item for sublist in l for item in sublist]
     return [(d,int(re.split('_',p)[4])) for (d,p) in l]
+
+def get_drive_inds(date='2011_09_26'):
+    """ retrieve a list of indices for a specific drive date.
+
+        @author hunse
+        @return a list of drive indices (int)
+    """
+    date_dir = os.path.join(data_dir, date)
+
+    inds = []
+    for obj in os.listdir(date_dir):
+        match = re.match("%s_drive_([0-9]{4})_sync" % date, obj)
+        if match is not None:
+            inds.append(int(match.groups()[0]))
+
+    return sorted(inds)
 
 
 def get_dates():
@@ -191,4 +215,3 @@ class Calib(object):
             xyd, image_shape, max_disp=max_disp, return_mask=return_mask)
 
 
-# TODO: functions to automatically download data

@@ -12,6 +12,7 @@ def test_get_drives():
     drives = get_drives()
     print drives
 
+
 def test_get_dates():
     dates = get_dates()
     print dates
