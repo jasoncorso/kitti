@@ -18,10 +18,10 @@ ext_modules.append(Extension(
 
 setup(
     name="kitti",
-    version="0.0.1",
-    author="Eric Hunsberger",
-    author_email="ehunsber@uwaterloo.ca",
-    url="https://github.com/hunse/kitti",
+    version="0.0.2",
+    author="Jason Corso",
+    author_email="jjcorso@umich.edu",
+    url="https://github.com/jasoncorso/kittipy",
     license="MIT",
     description="Tools for working with the KITTI dataset in Python",
     requires=[

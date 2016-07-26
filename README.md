@@ -3,14 +3,16 @@ kitti
 
 Tools for working with the KITTI dataset in Python.
 
+Forked from https://github.com/hunse/kitti 
+
 License
 -------
 
 The majority of this project is available under the MIT license. The files in
 `kitti/bp` are a notable exception, being a modified version of
-Pedro F. Felzenszwalb and Daniel P. Huttenlocher's belief propogation code [1]
+Pedro F. Felzenszwalb and Daniel P. Huttenlocher's belief propagation code [1]
 licensed under the GNU GPL v2. These files are not essential to any part of the
-rest of the project, and are only used to run the optional belief propogation
+rest of the project, and are only used to run the optional belief propagation
 disparity image interpolation.
 
 [1]: http://cs.brown.edu/~pff/bp/
@@ -20,7 +22,7 @@ Setup
 
 To begin working with this project, clone the repository to your machine
 
-    git clone https://github.com/hunse/kitti
+    git clone https://github.com/jasoncorso/kittipy
 
 Download the KITTI data to a subfolder named ``data`` within this folder.
 Most of the tools in this project are for working with the raw KITTI data.
@@ -54,3 +56,13 @@ build the Cython module, run
     python setup.py build_ext --inplace
 
 This should create the file ``module.so`` in ``kitti/bp``.
+
+Uninstall
+---------
+
+If you have pip installed, it is easy to uninstall kittipy
+
+    pip uninstall kitti
+
+
+
